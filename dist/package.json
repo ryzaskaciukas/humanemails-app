@@ -1,0 +1,21 @@
+{
+  "name": "humanemails",
+  "version": "0.0.1",
+  "author": "Domas Bitvinskas <domas.bitvinskas@me.com>",
+  "contributors": [
+    "Justas Palumickas <jpalumickas@gmail.com>"
+  ],
+  "description": "Edit deployed websites.",
+  "main": "main.js",
+  "dependencies": {
+    "electron-cookies": "^1.1.0",
+    "kbm-robot": "0.0.2",
+    "menubar": "^2.0.14",
+    "react": "^0.13.3",
+    "request": "^2.54.0",
+    "request-promise": "^0.4.2"
+  },
+  "keywords": [
+    "emails"
+  ]
+}
