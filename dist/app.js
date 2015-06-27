@@ -18,7 +18,9 @@ App = React.createClass({
     return {};
   },
   render: function() {
-    return React.createElement("div", null, React.createElement("nav", null, React.createElement("div", {
+    return React.createElement("div", {
+      "className": 'center-align'
+    }, React.createElement("nav", null, React.createElement("div", {
       "className": 'nav-wrapper'
     }, "Logged in as ", this.props.user_email)), React.createElement("p", null, "Press CTRL+M in your email app to paste your tracker sig"));
   }

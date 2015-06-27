@@ -10,7 +10,7 @@ App = React.createClass
 
     {}
   render: ->
-    <div>
+    <div className='center-align'>
       <nav>
         <div className='nav-wrapper'>
           Logged in as {@props.user_email}
