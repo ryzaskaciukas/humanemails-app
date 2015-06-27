@@ -6,7 +6,7 @@ ipc = require('ipc');
 
 request = require('request-promise');
 
-HOST = 'http://1b66d3db.ngrok.com';
+HOST = 'http://humanemails.com';
 
 App = React.createClass({
   getInitialState: function() {
@@ -42,8 +42,8 @@ Auth = React.createClass({
     var data;
     data = {
       user: {
-        email: 'domas@me.com',
-        password: '123123123'
+        email: this.state.email,
+        password: this.state.password
       }
     };
     return request({
@@ -56,6 +56,8 @@ Auth = React.createClass({
         "user_email": data.user.email,
         "user_token": resp.authentication_token
       }), document.body);
+    })["catch"](function() {
+      return alert('Wrong email or password');
     });
   },
   render: function() {

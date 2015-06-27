@@ -4,21 +4,18 @@ ipc = require('ipc')
 request = require('request-promise')
 
 globalShortcut = require('global-shortcut')
-robot = require('kbm-robot')
 clipboard = require('clipboard')
 
 main_window = null
 
 app.on 'ready', ->
-
-  main_window = new BrowserWindow({width: 800, height: 600})
+  main_window = new BrowserWindow(width: 300, height: 400)
   main_window.loadUrl('file://' + __dirname + '/index.html')
-  main_window.openDevTools()
+
+Paster = require('./paster')
+paster = new Paster()
 
 ipc.on 'bind-paste-key', (e, config) ->
-  Paster = require('./paster')
-  paster = new Paster()
-
   ret = globalShortcut.register 'Ctrl+M', ->
     data =
       user_email: config.user_email
@@ -26,8 +23,6 @@ ipc.on 'bind-paste-key', (e, config) ->
       host: config.host
 
     request(uri: "#{config.host}/app/use", method: 'POST', body: data, json: true).then (resp) ->
-      console.log(resp.sig)
-      clipboard.writeText('This program does not support html signature')
       clipboard.writeHtml(resp.sig)
 
       paster.paste()

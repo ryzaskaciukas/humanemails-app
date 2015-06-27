@@ -2,7 +2,7 @@ React = require('react')
 ipc = require('ipc')
 request = require('request-promise')
 
-HOST = 'http://1b66d3db.ngrok.com'
+HOST = 'http://humanemails.com'
 
 App = React.createClass
   getInitialState: ->
@@ -29,11 +29,13 @@ Auth = React.createClass
   signIn: ->
     data =
       user:
-        email: 'domas@me.com'
-        password: '123123123'
+        email: @state.email
+        password: @state.password
 
-    request(uri: "#{HOST}/users/sign_in", method: 'POST', body: data, json: true).then (resp) ->
+    request(uri: "#{HOST}/users/sign_in", method: 'POST', body: data, json: true).then((resp) ->
       React.render(<App user_email={data.user.email} user_token={resp.authentication_token} />, document.body)
+    ).catch ->
+      alert('Wrong email or password')
 
   render: ->
     <div className='container'>

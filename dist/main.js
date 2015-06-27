@@ -1,4 +1,4 @@
-var BrowserWindow, app, clipboard, globalShortcut, ipc, main_window, request, robot;
+var BrowserWindow, Paster, app, clipboard, globalShortcut, ipc, main_window, paster, request;
 
 app = require('app');
 
@@ -10,24 +10,24 @@ request = require('request-promise');
 
 globalShortcut = require('global-shortcut');
 
-robot = require('kbm-robot');
-
 clipboard = require('clipboard');
 
 main_window = null;
 
 app.on('ready', function() {
   main_window = new BrowserWindow({
-    width: 800,
-    height: 600
+    width: 300,
+    height: 400
   });
-  main_window.loadUrl('file://' + __dirname + '/index.html');
-  return main_window.openDevTools();
+  return main_window.loadUrl('file://' + __dirname + '/index.html');
 });
+
+Paster = require('./paster');
+
+paster = new Paster();
 
 ipc.on('bind-paste-key', function(e, config) {
   var ret;
-  console.log(config);
   ret = globalShortcut.register('Ctrl+M', function() {
     var data;
     data = {
@@ -41,12 +41,8 @@ ipc.on('bind-paste-key', function(e, config) {
       body: data,
       json: true
     }).then(function(resp) {
-      console.log(resp.sig);
-      clipboard.writeText('This program does not support html signature');
       clipboard.writeHtml(resp.sig);
-      robot = require("robotjs");
-      robot.keyTap('v', 'meta');
-      return console.log('PASTED MAC');
+      return paster.paste();
     });
   });
   if (ret === false) {
