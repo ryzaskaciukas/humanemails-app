@@ -40,6 +40,6 @@ gulp.task 'electron', ->
       release: './release',
       cache: './cache',
       version: 'v0.28.3',
-      platforms: ['darwin-x64']
+      platforms: ['win32-ia32', 'darwin-x64']
     ))
     .pipe(gulp.dest(''))

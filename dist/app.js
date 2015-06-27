@@ -6,7 +6,7 @@ ipc = require('ipc');
 
 request = require('request-promise');
 
-HOST = 'http://localhost:3000';
+HOST = 'http://1b66d3db.ngrok.com';
 
 App = React.createClass({
   getInitialState: function() {

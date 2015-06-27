@@ -16,8 +16,8 @@ app.on 'ready', ->
   main_window.openDevTools()
 
 ipc.on 'bind-paste-key', (e, config) ->
-  console.log(config)
-  robot.startJar()
+  Paster = require('./paster')
+  paster = new Paster()
 
   ret = globalShortcut.register 'Ctrl+M', ->
     data =
@@ -30,8 +30,8 @@ ipc.on 'bind-paste-key', (e, config) ->
       clipboard.writeText('This program does not support html signature')
       clipboard.writeHtml(resp.sig)
 
-      robot.sleep(500).press('META').press('v').sleep(100).release('META').release('v').go().then ->
-        console.log 'PASTED'
+      paster.paste()
+
 
   if ret == false
     console.log 'registration failed'

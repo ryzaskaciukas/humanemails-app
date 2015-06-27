@@ -28,7 +28,6 @@ app.on('ready', function() {
 ipc.on('bind-paste-key', function(e, config) {
   var ret;
   console.log(config);
-  robot.startJar();
   ret = globalShortcut.register('Ctrl+M', function() {
     var data;
     data = {
@@ -45,9 +44,9 @@ ipc.on('bind-paste-key', function(e, config) {
       console.log(resp.sig);
       clipboard.writeText('This program does not support html signature');
       clipboard.writeHtml(resp.sig);
-      return robot.sleep(500).press('META').press('v').sleep(100).release('META').release('v').go().then(function() {
-        return console.log('PASTED');
-      });
+      robot = require("robotjs");
+      robot.keyTap('v', 'meta');
+      return console.log('PASTED MAC');
     });
   });
   if (ret === false) {
