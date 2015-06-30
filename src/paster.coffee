@@ -1,25 +1,36 @@
 os = require('os')
+robot = require('kbm-robot')
 
 module.exports =
 class Paster
-  constructor: ->
+  constructor: (@alert) ->
     @platform = os.platform()
+    robot.startJar()
 
   paste: ->
     if @platform == 'darwin'
       @pasteMac()
-    else if /^win/.match(@platform)
+    else if /^win/.test(@platform)
       @pasteWindows()
     else
       new Error("Platform #{@platform} not supported")
 
   pasteMac: ->
-    robot = require("robotjs")
-    robot.keyTap('v', 'meta')
+    robot
+      .sleep(500)
+      .press('META')
+      .press('v')
+      .sleep(100)
+      .release('META')
+      .release('v')
+      .go()
 
   pasteWindows: ->
-    keyboard = require('node_keyboard')
-    keyboard.press(Key_Control_L)
-    keyboard.press(Key_V)
-    keyboard.release(Key_V)
-    keyboard.release(Key_Control_L)
+    robot
+      .sleep(500)
+      .press('CTRL')
+      .press('v')
+      .sleep(500)
+      .release('v')
+      .release('CTRL')
+      .go()

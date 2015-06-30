@@ -1,16 +1,20 @@
-var Paster, os;
+var Paster, os, robot;
 
 os = require('os');
 
+robot = require('kbm-robot');
+
 module.exports = Paster = (function() {
-  function Paster() {
+  function Paster(alert) {
+    this.alert = alert;
     this.platform = os.platform();
+    robot.startJar();
   }
 
   Paster.prototype.paste = function() {
     if (this.platform === 'darwin') {
       return this.pasteMac();
-    } else if (/^win/.match(this.platform)) {
+    } else if (/^win/.test(this.platform)) {
       return this.pasteWindows();
     } else {
       return new Error("Platform " + this.platform + " not supported");
@@ -18,18 +22,11 @@ module.exports = Paster = (function() {
   };
 
   Paster.prototype.pasteMac = function() {
-    var robot;
-    robot = require("robotjs");
-    return robot.keyTap('v', 'meta');
+    return robot.sleep(500).press('META').press('v').sleep(100).release('META').release('v').go();
   };
 
   Paster.prototype.pasteWindows = function() {
-    var keyboard;
-    keyboard = require('node_keyboard');
-    keyboard.press(Key_Control_L);
-    keyboard.press(Key_V);
-    keyboard.release(Key_V);
-    return keyboard.release(Key_Control_L);
+    return robot.sleep(500).press('CTRL').press('v').sleep(500).release('v').release('CTRL').go();
   };
 
   return Paster;

@@ -28,6 +28,10 @@ App = React.createClass({
 
 Auth = React.createClass({
   getInitialState: function() {
+    return {
+      email: 'domas@me.com',
+      password: '35618927'
+    };
     return {};
   },
   changeEmail: function(e) {

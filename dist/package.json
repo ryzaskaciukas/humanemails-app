@@ -8,6 +8,7 @@
   "description": "Edit deployed websites.",
   "main": "main.js",
   "dependencies": {
+    "kbm-robot": "0.0.2",
     "node_keyboard": "0.0.4",
     "react": "^0.13.3",
     "request-promise": "^0.4.2",
