@@ -16,11 +16,10 @@ main_window = null;
 
 app.on('ready', function() {
   main_window = new BrowserWindow({
-    width: 800,
-    height: 700
+    width: 300,
+    height: 400
   });
-  main_window.loadUrl('file://' + __dirname + '/index.html');
-  return main_window.openDevTools();
+  return main_window.loadUrl('file://' + __dirname + '/index.html');
 });
 
 alert = function(what) {
@@ -32,8 +31,8 @@ Paster = require('./paster');
 paster = new Paster(alert);
 
 ipc.on('bind-paste-key', function(e, config) {
-  var ret;
-  ret = globalShortcut.register('Ctrl+M', function() {
+  var executeSigPaste;
+  executeSigPaste = function() {
     var data;
     main_window.setProgressBar(0);
     data = {
@@ -61,8 +60,6 @@ ipc.on('bind-paste-key', function(e, config) {
         return alert(e.message + e.stack);
       }
     });
-  });
-  if (ret === false) {
-    return alert('registration failed');
-  }
+  };
+  return globalShortcut.register('CmdOrCtrl+M', executeSigPaste);
 });

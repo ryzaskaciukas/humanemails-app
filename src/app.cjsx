@@ -21,11 +21,6 @@ App = React.createClass
 
 Auth = React.createClass
   getInitialState: ->
-    return {
-      email: 'domas@me.com'
-      password: '35618927'
-    }
-
     {}
   changeEmail: (e) ->
     @setState(email: e.target.value)

@@ -9,9 +9,9 @@ clipboard = require('clipboard')
 main_window = null
 
 app.on 'ready', ->
-  main_window = new BrowserWindow(width: 800, height: 700)
+  main_window = new BrowserWindow(width: 300, height: 400)
   main_window.loadUrl('file://' + __dirname + '/index.html')
-  main_window.openDevTools()
+  # main_window.openDevTools()
 
 alert = (what) ->
   main_window.webContents.send('alert', what)
@@ -20,7 +20,7 @@ Paster = require('./paster')
 paster = new Paster(alert)
 
 ipc.on 'bind-paste-key', (e, config) ->
-  ret = globalShortcut.register 'Ctrl+M', ->
+  executeSigPaste = ->
     main_window.setProgressBar(0)
     data =
       user_email: config.user_email
@@ -38,5 +38,4 @@ ipc.on 'bind-paste-key', (e, config) ->
       catch e
         alert(e.message + e.stack)
 
-  if ret == false
-    alert('registration failed')
+  globalShortcut.register('CmdOrCtrl+M', executeSigPaste)
