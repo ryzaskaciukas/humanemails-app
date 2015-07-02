@@ -6,7 +6,7 @@ ipc = require('ipc');
 
 request = require('request-promise');
 
-HOST = 'http://humanemails.com';
+HOST = 'http://app.humanemails.com';
 
 App = React.createClass({
   getInitialState: function() {
