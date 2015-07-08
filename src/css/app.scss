@@ -1,0 +1,51 @@
+@import '../../node_modules/materialize-css/sass/components/normalize';
+@import '../../node_modules/materialize-css/sass/components/color';
+
+$primary-color-light: true !default;
+$secondary-color: color("materialize-red", "lighten-2") !default;
+
+@import '../../node_modules/materialize-css/sass/materialize';
+
+$so-grey: #2c2c2c;
+
+body {
+  background-color: $so-grey;
+  color: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+
+.logo {
+  padding-top: 20px;
+}
+
+.btn,
+&.btn:hover {
+  box-shadow: none;
+}
+
+.instructions {
+  padding-top: 50px;
+  font-size: 25px;
+
+  .press {
+    font-size: 35px;
+  }
+
+  .big-line {
+    line-height: 45px;
+    vertical-align: middle;
+  }
+
+  .cmd {
+    font-size: 45px;
+  }
+
+  .bottom-logo {
+    padding-top: 40px;
+  }
+
+  .no-padding {
+    padding-top: 20px;
+    margin-bottom: 5px;
+  }
+}

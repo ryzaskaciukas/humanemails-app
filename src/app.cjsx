@@ -10,13 +10,22 @@ App = React.createClass
 
     {}
   render: ->
-    <div className='center-align'>
-      <nav>
-        <div className='nav-wrapper'>
-          Logged in as {@props.user_email}
-        </div>
-      </nav>
-      <p>Press CTRL+M in your email app to paste your tracker sig</p>
+    <div className='container center-align instructions'>
+      <div className='row press'>
+        Press
+      </div>
+      <div className='row big-line'>
+        <span className='cmd'>⌘</span> + M
+      </div>
+      <div className='row no-padding'>
+        in your email
+      </div>
+      <div className='row'>
+        <b>to track it</b>
+      </div>
+      <div className='row bottom-logo'>
+        <img src='img/bottom.png' height=25 />
+      </div>
     </div>
 
 Auth = React.createClass
@@ -26,7 +35,9 @@ Auth = React.createClass
     @setState(email: e.target.value)
   changePassword: (e) ->
     @setState(password: e.target.value)
-  signIn: ->
+  signIn: (e) ->
+    e.preventDefault()
+
     data =
       user:
         email: @state.email
@@ -39,23 +50,31 @@ Auth = React.createClass
 
   render: ->
     <div className='container'>
-      <div className='row'>
-        <div className='input-field'>
-          <input placeholder='Email' type='text' value={@state.email} onChange={@changeEmail}/>
+      <div className='logo row'>
+        <div className='col s8'>
+          <img className='responsive-img' src='img/logo.png' />
         </div>
       </div>
 
-      <div className='row'>
-        <div className='input-field'>
-          <input placeholder='Password' type='password' value={@state.password} onChange={@changePassword}/>
+      <form onSubmit={@signIn}>
+        <div className='row'>
+          <div className='input-field'>
+            <input placeholder='Email' type='text' value={@state.email} onChange={@changeEmail}/>
+          </div>
         </div>
-      </div>
 
-      <div className='row'>
-        <div className='input-field'>
-          <button className="waves-effect waves-light btn-large" onClick={@signIn}>Sign in</button>
+        <div className='row'>
+          <div className='input-field'>
+            <input placeholder='Password' type='password' value={@state.password} onChange={@changePassword}/>
+          </div>
         </div>
-      </div>
+
+        <div className='row center-align'>
+          <div className='input-field'>
+            <button className="waves-effect waves-light btn-large">Sign in</button>
+          </div>
+        </div>
+      </form>
     </div>
 
 React.render(<Auth/>, document.body)

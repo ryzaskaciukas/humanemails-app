@@ -19,10 +19,23 @@ App = React.createClass({
   },
   render: function() {
     return React.createElement("div", {
-      "className": 'center-align'
-    }, React.createElement("nav", null, React.createElement("div", {
-      "className": 'nav-wrapper'
-    }, "Logged in as ", this.props.user_email)), React.createElement("p", null, "Press CTRL+M in your email app to paste your tracker sig"));
+      "className": 'container center-align instructions'
+    }, React.createElement("div", {
+      "className": 'row press'
+    }, "Press"), React.createElement("div", {
+      "className": 'row big-line'
+    }, React.createElement("span", {
+      "className": 'cmd'
+    }, "\u2318"), " + M"), React.createElement("div", {
+      "className": 'row no-padding'
+    }, "in your email"), React.createElement("div", {
+      "className": 'row'
+    }, React.createElement("b", null, "to track it")), React.createElement("div", {
+      "className": 'row bottom-logo'
+    }, React.createElement("img", {
+      "src": 'img/bottom.png',
+      "height": 25
+    })));
   }
 });
 
@@ -40,8 +53,9 @@ Auth = React.createClass({
       password: e.target.value
     });
   },
-  signIn: function() {
+  signIn: function(e) {
     var data;
+    e.preventDefault();
     data = {
       user: {
         email: this.state.email,
@@ -66,6 +80,15 @@ Auth = React.createClass({
     return React.createElement("div", {
       "className": 'container'
     }, React.createElement("div", {
+      "className": 'logo row'
+    }, React.createElement("div", {
+      "className": 'col s8'
+    }, React.createElement("img", {
+      "className": 'responsive-img',
+      "src": 'img/logo.png'
+    }))), React.createElement("form", {
+      "onSubmit": this.signIn
+    }, React.createElement("div", {
       "className": 'row'
     }, React.createElement("div", {
       "className": 'input-field'
@@ -84,13 +107,12 @@ Auth = React.createClass({
       "value": this.state.password,
       "onChange": this.changePassword
     }))), React.createElement("div", {
-      "className": 'row'
+      "className": 'row center-align'
     }, React.createElement("div", {
       "className": 'input-field'
     }, React.createElement("button", {
-      "className": "waves-effect waves-light btn-large",
-      "onClick": this.signIn
-    }, "Sign in"))));
+      "className": "waves-effect waves-light btn-large"
+    }, "Sign in")))));
   }
 });
 

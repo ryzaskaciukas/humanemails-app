@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "electron-prebuilt": "^0.28.3",
+    "materialize-css": "Dogfalo/materialize#753f7bcf1d51ac9b1064520752649d64579a3eb4",
     "request-promise": "^0.4.2"
   }
 }

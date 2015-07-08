@@ -25,9 +25,9 @@ gulp.task 'cjsx', ->
     .pipe(gulp.dest('./dist'))
 
 gulp.task 'sass', ->
-  gulp.src('./src/scss/**/*.scss')
+  gulp.src('./src/css/**/*.scss')
     .pipe(sass())
-    .pipe(gulp.dest('./browser/css'));
+    .pipe(gulp.dest('./dist/css'));
 
 electron = require('gulp-electron')
 package_json = require('./package.json')
