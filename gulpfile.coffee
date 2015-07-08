@@ -41,6 +41,13 @@ gulp.task 'electron', ->
       cache: './cache',
       version: 'v0.28.3',
       packaging: true,
-      platforms: ['win32-ia32', 'darwin-x64']
+      platforms: ['win32-ia32', 'darwin-x64'],
+      platformResources:
+        darwin:
+          CFBundleDisplayName: package_json.name,
+          CFBundleIdentifier: package_json.name,
+          CFBundleName: package_json.name,
+          CFBundleVersion: package_json.version,
+          icon: './human.icns'
     ))
     .pipe(gulp.dest(''))
