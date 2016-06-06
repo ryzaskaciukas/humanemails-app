@@ -2,13 +2,12 @@ var Paster, os, robot;
 
 os = require('os');
 
-robot = require('kbm-robot');
+robot = require('robotjs');
 
 module.exports = Paster = (function() {
   function Paster(alert) {
     this.alert = alert;
     this.platform = os.platform();
-    robot.startJar();
   }
 
   Paster.prototype.paste = function() {
@@ -22,7 +21,7 @@ module.exports = Paster = (function() {
   };
 
   Paster.prototype.pasteMac = function() {
-    return robot.sleep(500).press('META').press('v').sleep(100).release('META').release('v').go();
+    return robot.keyTap('v', 'command');
   };
 
   Paster.prototype.pasteWindows = function() {

@@ -1,16 +1,16 @@
-var App, Auth, HOST, React, ipc, request;
+var App, Auth, HOST, React, ipcRenderer, request;
 
 React = require('react');
 
-ipc = require('ipc');
+ipcRenderer = require('electron').ipcRenderer;
 
 request = require('request-promise');
 
 HOST = 'http://app.humanemails.com';
 
-App = React.createClass({
+App = React.createClass({displayName: "App",
   getInitialState: function() {
-    ipc.send('bind-paste-key', {
+    ipcRenderer.send('bind-paste-key', {
       user_email: this.props.user_email,
       user_token: this.props.user_token,
       host: HOST
@@ -26,7 +26,7 @@ App = React.createClass({
       "className": 'row big-line'
     }, React.createElement("span", {
       "className": 'cmd'
-    }, "\u2318"), " + M"), React.createElement("div", {
+    }, "⌘"), " + M"), React.createElement("div", {
       "className": 'row no-padding'
     }, "in your email"), React.createElement("div", {
       "className": 'row'
@@ -39,7 +39,7 @@ App = React.createClass({
   }
 });
 
-Auth = React.createClass({
+Auth = React.createClass({displayName: "Auth",
   getInitialState: function() {
     return {};
   },

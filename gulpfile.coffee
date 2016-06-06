@@ -39,7 +39,7 @@ gulp.task 'electron', ->
       packageJson: package_json,
       release: './release',
       cache: './cache',
-      version: 'v0.28.3',
+      version: 'v1.2.1',
       packaging: true,
       platforms: ['win32-ia32', 'darwin-x64'],
       platformResources:

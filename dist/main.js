@@ -1,16 +1,18 @@
-var BrowserWindow, Paster, alert, app, clipboard, globalShortcut, ipc, main_window, paster, request;
+var BrowserWindow, Paster, _, alert, app, clipboard, globalShortcut, ipcMain, main_window, paster, request;
 
-app = require('app');
+app = require('electron').app;
 
-BrowserWindow = require('browser-window');
+BrowserWindow = require('electron').BrowserWindow;
 
-ipc = require('ipc');
+ipcMain = require('electron').ipcMain;
 
 request = require('request-promise');
 
-globalShortcut = require('global-shortcut');
+_ = require('lodash');
 
-clipboard = require('clipboard');
+globalShortcut = require('electron').globalShortcut;
+
+clipboard = require('electron').clipboard;
 
 main_window = null;
 
@@ -19,7 +21,7 @@ app.on('ready', function() {
     width: 300,
     height: 400
   });
-  return main_window.loadUrl('file://' + __dirname + '/index.html');
+  return main_window.loadURL('file://' + __dirname + '/index.html');
 });
 
 alert = function(what) {
@@ -30,10 +32,33 @@ Paster = require('./paster');
 
 paster = new Paster(alert);
 
-ipc.on('bind-paste-key', function(e, config) {
+ipcMain.on('bind-paste-key', function(e, config) {
   var executeSigPaste;
   executeSigPaste = function() {
-    var data;
+    var availableFormats, clipboardBackup, data;
+    availableFormats = [
+      {
+        key: 'text',
+        write: 'writeText',
+        read: 'readText'
+      }, {
+        key: 'html',
+        write: 'writeHTML',
+        read: 'readHTML'
+      }, {
+        key: 'rtf',
+        write: 'writeRTF',
+        read: 'readRTF'
+      }, {
+        key: 'image',
+        write: 'writeImage',
+        read: 'readImage'
+      }
+    ];
+    clipboardBackup = {};
+    _.each(availableFormats, function(format) {
+      return clipboardBackup[format.key] = clipboard[format.read]();
+    });
     main_window.setProgressBar(0);
     data = {
       user_email: config.user_email,
@@ -46,18 +71,22 @@ ipc.on('bind-paste-key', function(e, config) {
       body: data,
       json: true
     }).then(function(resp) {
+      var error;
       try {
         main_window.setProgressBar(0.5);
         clipboard.writeHtml(resp.sig);
-        return paster.paste().then(function() {
-          main_window.setProgressBar(1);
-          return setTimeout((function() {
-            return main_window.setProgressBar(-1);
-          }), 1000);
-        });
-      } catch (_error) {
-        e = _error;
+        paster.paste();
+        main_window.setProgressBar(1);
+        return setTimeout((function() {
+          return main_window.setProgressBar(-1);
+        }), 1000);
+      } catch (error) {
+        e = error;
         return alert(e.message + e.stack);
+      } finally {
+        _.each(availableFormats, function(format) {
+          return clipboard[format.write](clipboardBackup[format.key]);
+        });
       }
     });
   };

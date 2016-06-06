@@ -1,12 +1,12 @@
 React = require('react')
-ipc = require('ipc')
+ipcRenderer = require('electron').ipcRenderer
 request = require('request-promise')
 
 HOST = 'http://app.humanemails.com'
 
 App = React.createClass
   getInitialState: ->
-    ipc.send('bind-paste-key', user_email: @props.user_email, user_token: @props.user_token, host: HOST)
+    ipcRenderer.send('bind-paste-key', user_email: @props.user_email, user_token: @props.user_token, host: HOST)
 
     {}
   render: ->
