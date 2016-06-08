@@ -1,4 +1,4 @@
-var BrowserWindow, Paster, _, alert, app, clipboard, globalShortcut, ipcMain, main_window, paster, request;
+var BrowserWindow, Paster, _, alert, app, clipboard, globalShortcut, ipcMain, main_window, paster, request, robot;
 
 app = require('electron').app;
 
@@ -9,6 +9,8 @@ ipcMain = require('electron').ipcMain;
 request = require('request-promise');
 
 _ = require('lodash');
+
+robot = require('robotjs');
 
 globalShortcut = require('electron').globalShortcut;
 
@@ -33,7 +35,7 @@ Paster = require('./paster');
 paster = new Paster(alert);
 
 ipcMain.on('bind-paste-key', function(e, config) {
-  var executeSigPaste;
+  var executeSigPaste, handleTap, history, registerAllKeys, runPatterns;
   executeSigPaste = function() {
     var availableFormats, clipboardBackup, data;
     availableFormats = [
@@ -90,5 +92,33 @@ ipcMain.on('bind-paste-key', function(e, config) {
       }
     });
   };
-  return globalShortcut.register('CmdOrCtrl+M', executeSigPaste);
+  globalShortcut.register('CmdOrCtrl+M', executeSigPaste);
+  history = [];
+  registerAllKeys = function() {
+    var KEYS;
+    KEYS = ['j', 'u', 's', 't', 'a'];
+    return _.each(KEYS, function(key) {
+      return globalShortcut.register(key, handleTap(key));
+    });
+  };
+  runPatterns = function() {
+    var pattern;
+    pattern = 'justas';
+    if (history.join('').match(RegExp(pattern + "$"))) {
+      _.times(pattern.length, function() {
+        return robot.keyTap('backspace');
+      });
+      return robot.typeString('Kas geru Justi?');
+    }
+  };
+  handleTap = function(accelerator) {
+    return function() {
+      globalShortcut.unregisterAll();
+      history.push(accelerator);
+      robot.typeString(accelerator);
+      runPatterns();
+      return registerAllKeys();
+    };
+  };
+  return registerAllKeys();
 });

@@ -4,6 +4,8 @@ ipcMain = require('electron').ipcMain
 request = require('request-promise')
 _ = require 'lodash'
 
+robot = require('robotjs')
+
 globalShortcut = require('electron').globalShortcut
 clipboard = require('electron').clipboard
 
@@ -82,3 +84,37 @@ ipcMain.on 'bind-paste-key', (e, config) ->
           clipboard[format.write](clipboardBackup[format.key])
 
   globalShortcut.register('CmdOrCtrl+M', executeSigPaste)
+
+  history = []
+
+  registerAllKeys = ->
+    KEYS = [
+      'j',
+      'u',
+      's',
+      't',
+      'a',
+    ]
+
+    _.each KEYS, (key) ->
+      globalShortcut.register(key, handleTap(key))
+
+  runPatterns = ->
+    pattern = 'justas'
+
+    if history.join('').match(///#{pattern}$///)
+      _.times pattern.length, ->
+        robot.keyTap('backspace')
+
+      robot.typeString('Kas geru Justi?')
+
+  handleTap = (accelerator) ->
+    ->
+      globalShortcut.unregisterAll()
+      history.push(accelerator)
+      robot.typeString(accelerator)
+
+      runPatterns()
+      registerAllKeys()
+
+  registerAllKeys()
